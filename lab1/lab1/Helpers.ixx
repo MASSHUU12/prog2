@@ -3,7 +3,6 @@ export module Helpers;
 import <iostream>;
 import <string>;
 import <random>;
-import <conio.h>;
 
 import Structs;
 
@@ -52,10 +51,14 @@ export void create(Item*& item, const size_t size) {
 
 export void pause(const char str) {
 	std::cout << str;
-	_getch();
+
+	std::cin.ignore(); // Clear any input left in memory
+	std::cin.ignore(); // Wait for user to press enter
 }
 
 export void pause(const std::string& str) {
 	std::cout << str;
-	_getch();
+
+	std::cin.ignore(); // Clear any input left in memory
+	std::cin.ignore(); // Wait for user to press enter
 }
