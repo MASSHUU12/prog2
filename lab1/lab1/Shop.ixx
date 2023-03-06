@@ -1,7 +1,6 @@
 export module Shop;
 
 import <iostream>;
-import <conio.h>;
 
 import Structs;
 import Random;
@@ -30,7 +29,7 @@ export namespace shop {
 			clearScreen();
 		}
 
-		numberOfItems = random::getRandomNumber(1, 16);
+		numberOfItems = random::getRandomNumber(1, 32);
 
 		create(items, numberOfItems);
 
@@ -61,9 +60,7 @@ export namespace shop {
 		}
 		logger::ok("END");
 
-		std::cout << "\nPress any key to continue...";
-		_getch();
-
+		pause("\nPress any key to continue...");
 		clearScreen();
 	}
 }

@@ -3,6 +3,7 @@ export module Helpers;
 import <iostream>;
 import <string>;
 import <random>;
+import <conio.h>;
 
 import Structs;
 
@@ -47,4 +48,14 @@ export void create(Item*& item) {
 
 export void create(Item*& item, const size_t size) {
 	item = new Item[size];
+}
+
+export void pause(const char str) {
+	std::cout << str;
+	_getch();
+}
+
+export void pause(const std::string& str) {
+	std::cout << str;
+	_getch();
 }
