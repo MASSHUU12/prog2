@@ -2,6 +2,9 @@ export module Helpers;
 
 import <iostream>;
 import <string>;
+import <random>;
+
+import Structs;
 
 export int stringToInt(const std::string& str)
 {
@@ -36,4 +39,12 @@ export void inline clearScreen(void) {
 	#elif defined(__APPLE__)
 		system("clear");
 	#endif
+}
+
+export void create(Item*& item) {
+	item = new Item;
+}
+
+export void create(Item*& item, const size_t size) {
+	item = new Item[size];
 }

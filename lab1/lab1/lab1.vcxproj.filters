@@ -27,5 +27,17 @@
     <ClCompile Include="Color.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Structs.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Enums.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CreateShopItems.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Random.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
