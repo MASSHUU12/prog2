@@ -1,5 +1,7 @@
 import <iostream>;
-import StringToInt;
+
+import Helpers;
+import Menu;
 
 int main(void)
 {
@@ -8,18 +10,29 @@ int main(void)
 
 	do
 	{
+		menu();
+
+		std::cout << "> ";
 		std::cin >> input;
+
+		stringToLower(input);
+
+		// Check if user wants to exit program
+		if (input == "q")
+			break;
 
 		try
 		{
 			validatedInput = stringToInt(input);
-			std::cout << validatedInput;
 		}
 		catch (const std::invalid_argument& e)
 		{
-			std::cout << "Invalid input: " << e.what() << "\n";
+			clearScreen();
+			std::cout << "Invalid input: " << e.what() << "\n\n";
 			continue;
 		}
+
+		clearScreen();
 		
 	} while (true);
 

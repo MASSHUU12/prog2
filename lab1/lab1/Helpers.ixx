@@ -1,4 +1,4 @@
-export module StringToInt;
+export module Helpers;
 
 import <iostream>;
 import <string>;
@@ -18,4 +18,22 @@ export int stringToInt(const std::string& str)
 
 	// Convert the input string to an integer
 	return std::stoi(str);
+}
+
+export void stringToLower(std::string& str) {
+	// Loop all characters
+	for (size_t i = 0; i < str.length(); i++)
+	{
+		str[i] = std::tolower(str[i]);
+	}
+}
+
+export void clearScreen(void) {
+	#if defined _WIN32
+		system("cls");
+	#elif defined (__LINUX__) || defined(__gnu_linux__) || defined(__linux__)
+		system("clear");
+	#elif defined (__APPLE__)
+		system("clear");
+	#endif
 }
