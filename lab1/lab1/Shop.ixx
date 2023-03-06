@@ -6,6 +6,7 @@ import Structs;
 import Random;
 import Helpers;
 import Text;
+import Logger;
 
 export namespace shop {
 	void createItems(Item*& items, size_t& numberOfItems) {
@@ -19,13 +20,13 @@ export namespace shop {
 			items[i].price = random::getRandomNumber(0.1, 999.9, 2);
 		}
 
-		std::cout << text::FG_GREEN << "Shop items created" << text::RESET << "\n";
+		logger::ok("Shop items created");
 	}
 
 	void showItems(Item*& items, const size_t length) {
 		if (items == nullptr)
 		{
-			std::cout << text::BG_YELLOW << text::FG_BLACK << "There is no items to show" << text::RESET << "\n";
+			logger::warning("There is no items to show");
 			return;
 		}
 
@@ -33,12 +34,12 @@ export namespace shop {
 		{
 			std::cout << items[i].name << "\t" << items[i].price << " PLN\n";
 		}
-		std::cout << "\n" << text::FG_GREEN << "END" << "\n" << text::RESET;
+		logger::ok("END");
 	}
 
 	void deleteItems(Item*& items, size_t& length) {
 		if (items == nullptr) {
-			std::cout << text::BG_YELLOW << text::FG_BLACK << "There is no items to delete" << text::RESET << "\n";
+			logger::warning("There is no items to delete");
 			return;
 		}
 		delete[] items;
@@ -46,6 +47,6 @@ export namespace shop {
 		items = nullptr;
 		length = 0;
 
-		std::cout << "\n" << text::FG_GREEN << "Shop items deleted" << "\n" << text::RESET;
+		logger::ok("Shop items deleted");
 	}
 }

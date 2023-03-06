@@ -6,6 +6,7 @@ import Text;
 import Enums;
 import Shop;
 import Structs;
+import Logger;
 
 int main(void)
 {
@@ -35,7 +36,9 @@ int main(void)
 		catch (const std::invalid_argument& e)
 		{
 			clearScreen();
-			std::cout << text::BG_RED << text::BOLD << "Invalid input: " << e.what() << text::RESET << "\n\n";
+
+			logger::error(std::string("Invalid input: ") + e.what() + "\n");
+			//std::cout << text::BG_RED << text::BOLD << "Invalid input: " << e.what() << text::RESET << "\n\n";
 			continue;
 		}
 
@@ -53,7 +56,7 @@ int main(void)
 			shop::deleteItems(items, numberOfItems);
 			break;
 		default:
-			std::cout << text::BG_RED << text::BOLD << "Invalid input: Such an option doesn't exist" << text::RESET << "\n\n";
+			logger::error(std::string("Invalid input: Such an option doesn't exist") + "\n");
 			break;
 		}
 		
