@@ -24,5 +24,8 @@
     <ClCompile Include="Menu.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Color.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

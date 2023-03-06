@@ -2,6 +2,7 @@ import <iostream>;
 
 import Helpers;
 import Menu;
+import Color;
 
 int main(void)
 {
@@ -32,7 +33,9 @@ int main(void)
 			continue;
 		}
 
-		clearScreen();
+		//clearScreen();
+
+		std::cout << "\n\n" << Color::bgMagenta << "AAA" << Color::reset << "\n\n";
 		
 	} while (true);
 
