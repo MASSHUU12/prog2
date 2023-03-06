@@ -1,6 +1,7 @@
 export module Shop;
 
 import <iostream>;
+import <conio.h>;
 
 import Structs;
 import Random;
@@ -59,5 +60,10 @@ export namespace shop {
 			std::cout << items[i].name << "    " << items[i].price << " PLN\n";
 		}
 		logger::ok("END");
+
+		std::cout << "\nPress any key to continue...";
+		_getch();
+
+		clearScreen();
 	}
 }
