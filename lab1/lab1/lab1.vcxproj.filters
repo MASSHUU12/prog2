@@ -24,7 +24,7 @@
     <ClCompile Include="Menu.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Color.ixx">
+    <ClCompile Include="Text.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Structs.ixx">
@@ -33,10 +33,10 @@
     <ClCompile Include="Enums.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CreateShopItems.ixx">
+    <ClCompile Include="Random.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Random.ixx">
+    <ClCompile Include="Shop.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

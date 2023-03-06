@@ -2,9 +2,9 @@ import <iostream>;
 
 import Helpers;
 import Menu;
-import Color;
+import Text;
 import Enums;
-import CreateShopItems;
+import Shop;
 import Structs;
 
 int main(void)
@@ -13,6 +13,7 @@ int main(void)
 	short validatedInput;
 
 	Item* items = nullptr;
+	size_t numberOfItems = 0;
 
 	do
 	{
@@ -34,7 +35,7 @@ int main(void)
 		catch (const std::invalid_argument& e)
 		{
 			clearScreen();
-			std::cout << color::fgRed << "Invalid input: " << e.what() << color::reset << "\n\n";
+			std::cout << text::BG_RED << text::BOLD << "Invalid input: " << e.what() << text::RESET << "\n\n";
 			continue;
 		}
 
@@ -43,10 +44,13 @@ int main(void)
 		switch (validatedInput)
 		{
 		case CREATE_SHOP_ITEMS:
-			createShopItems(items);
+			shop::createItems(items, numberOfItems);
+			break;
+		case SHOW_SHOP_ITEMS:
+			shop::showItems(items, numberOfItems);
 			break;
 		default:
-			std::cout << color::bgRed << "Invalid input: Such an option doesn't exist" << color::reset << "\n\n";
+			std::cout << text::BG_RED << text::BOLD << "Invalid input: Such an option doesn't exist" << text::RESET << "\n\n";
 			break;
 		}
 		

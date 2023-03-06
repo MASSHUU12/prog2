@@ -129,12 +129,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Color.ixx" />
-    <ClCompile Include="CreateShopItems.ixx" />
+    <ClCompile Include="Text.ixx" />
     <ClCompile Include="Enums.ixx" />
     <ClCompile Include="lab1.cpp" />
     <ClCompile Include="Menu.ixx" />
     <ClCompile Include="Helpers.ixx" />
+    <ClCompile Include="Shop.ixx" />
     <ClCompile Include="Random.ixx" />
     <ClCompile Include="Structs.ixx" />
   </ItemGroup>
