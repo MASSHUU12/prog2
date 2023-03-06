@@ -10,6 +10,7 @@ export void menu() {
 	std::puts("########################\n");
 	std::puts("1. Create shop items");
 	std::puts("2. Show shop items");
+	std::puts("3. Delete shop items");
 	std::puts("q. Exit");
 	std::puts("");
 }

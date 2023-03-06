@@ -49,6 +49,9 @@ int main(void)
 		case SHOW_SHOP_ITEMS:
 			shop::showItems(items, numberOfItems);
 			break;
+		case DELETE_SHOP_ITEMS:
+			shop::deleteItems(items, numberOfItems);
+			break;
 		default:
 			std::cout << text::BG_RED << text::BOLD << "Invalid input: Such an option doesn't exist" << text::RESET << "\n\n";
 			break;
