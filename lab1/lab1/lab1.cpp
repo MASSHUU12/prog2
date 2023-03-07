@@ -23,11 +23,12 @@ int main(void)
 		std::cout << "> ";
 		std::cin >> input;
 
-		stringToLower(input);
-
 		// Check if user wants to exit program
-		if (input == "q")
+		if (input == "q" || input == "Q")
+		{
+			std::cout << "Exiting gracefully...";
 			break;
+		}
 
 		try
 		{
@@ -38,7 +39,6 @@ int main(void)
 			clearScreen();
 
 			logger::error(std::string("Invalid input: ") + e.what() + "\n");
-			//std::cout << text::BG_RED << text::BOLD << "Invalid input: " << e.what() << text::RESET << "\n\n";
 			continue;
 		}
 
@@ -54,6 +54,21 @@ int main(void)
 			break;
 		case DELETE_SHOP_ITEMS:
 			shop::deleteItems(items, numberOfItems);
+			break;
+		case EDIT_SHOP_ITEM:
+			shop::edit(items, numberOfItems);
+			break;
+		case CREATE_EMPLOYEES:
+			std::cout << "Not implemented.";
+			break;
+		case SHOW_EMPLOYEES:
+			std::cout << "Not implemented.";
+			break;
+		case DELETE_EMPLOYEES:
+			std::cout << "Not implemented.";
+			break;
+		case EDIT_EMPLOYEE:
+			std::cout << "Not implemented.";
 			break;
 		default:
 			logger::error(std::string("Invalid input: Such an option doesn't exist") + "\n");
