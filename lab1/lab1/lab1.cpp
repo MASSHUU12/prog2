@@ -58,17 +58,17 @@ int main(void)
 		case EDIT_SHOP_ITEM:
 			shop::edit(items, numberOfItems);
 			break;
+		case SAVE_SHOP_ITEMS:
+			break;
 		case CREATE_EMPLOYEES:
-			std::cout << "Not implemented.";
 			break;
 		case SHOW_EMPLOYEES:
-			std::cout << "Not implemented.";
 			break;
 		case DELETE_EMPLOYEES:
-			std::cout << "Not implemented.";
 			break;
 		case EDIT_EMPLOYEE:
-			std::cout << "Not implemented.";
+			break;
+		case SAVE_EMPLOYEES:
 			break;
 		default:
 			logger::error(std::string("Invalid input: Such an option doesn't exist") + "\n");
