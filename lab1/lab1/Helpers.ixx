@@ -57,7 +57,7 @@ export void pause(const std::string& str) {
 	std::cin.ignore(); // Wait for user to press enter
 }
 
-export void save_to_csv(const Item* items, const int length, const std::string& fileName) {
+export void saveToCsv(const Item* items, const int length, const std::string& fileName) {
 	if (items == nullptr) {
 		logger::warning("There is no items to save");
 		return;
@@ -78,4 +78,27 @@ export void save_to_csv(const Item* items, const int length, const std::string& 
 	file.close();
 
 	logger::ok("Items saved to: " + fileName);
+}
+
+export void saveToCsv(const Employee* employees, const int length, const std::string& fileName) {
+	if (employees == nullptr) {
+		logger::warning("There is no employees to save");
+		return;
+	}
+
+	// Open the file for writing
+	std::ofstream file(fileName);
+
+	// Write column headers
+	file << "Name,Age\n";
+
+	// Write the data for each item
+	for (size_t i = 0; i < length; i++)
+	{
+		file << employees[i].name << "," << employees[i].age << "\n";
+	}
+
+	file.close();
+
+	logger::ok("Employees saved to: " + fileName);
 }

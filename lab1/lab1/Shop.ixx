@@ -132,7 +132,7 @@ export namespace shop {
 					<< " PLN\n" << text::RESET;
 				continue;
 			}
-			std::cout << employees[i].name << "    " << employees[i].age << " PLN\n";
+			std::cout << employees[i].name << "    " << employees[i].age << "\n";
 		}
 		logger::ok("END");
 

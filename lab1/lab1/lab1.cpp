@@ -62,17 +62,22 @@ int main(void)
 			shop::edit(items, numberOfItems);
 			break;
 		case SAVE_SHOP_ITEMS:
-			save_to_csv(items, numberOfItems, "shop_items.csv");
+			saveToCsv(items, numberOfItems, "shop_items.csv");
 			break;
 		case CREATE_EMPLOYEES:
+			shop::fill(employees, numberOfEmployees);
 			break;
 		case SHOW_EMPLOYEES:
+			shop::show(employees, numberOfEmployees);
 			break;
 		case DELETE_EMPLOYEES:
+			shop::deleteAll(employees, numberOfEmployees);
 			break;
 		case EDIT_EMPLOYEE:
+			shop::edit(employees, numberOfEmployees);
 			break;
 		case SAVE_EMPLOYEES:
+			saveToCsv(employees, numberOfEmployees, "shop_employees.csv");
 			break;
 		default:
 			logger::error(std::string("Invalid input: Such an option doesn't exist") + "\n");
