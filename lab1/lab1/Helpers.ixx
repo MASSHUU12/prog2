@@ -3,8 +3,10 @@ export module Helpers;
 import <iostream>;
 import <string>;
 import <random>;
+import <fstream>;
 
 import Structs;
+import Logger;
 
 export int stringToInt(const std::string& str)
 {
@@ -61,4 +63,27 @@ export void pause(const std::string& str) {
 
 	std::cin.ignore(); // Clear any input left in memory
 	std::cin.ignore(); // Wait for user to press enter
+}
+
+export void save_to_csv(const Item* items, const int length, const std::string& fileName) {
+	if (items == nullptr) {
+		logger::warning("There is no items to save");
+		return;
+	}
+
+	// Open the file for writing
+	std::ofstream file(fileName);
+
+	// Write column headers
+	file << "Name,Price\n";
+
+	// Write the data for each item
+	for (size_t i = 0; i < length; i++)
+	{
+		file << items[i].name << "," << items[i].price << "\n";
+	}
+
+	file.close();
+
+	logger::ok("Items saved to: " + fileName);
 }

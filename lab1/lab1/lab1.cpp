@@ -59,6 +59,7 @@ int main(void)
 			shop::edit(items, numberOfItems);
 			break;
 		case SAVE_SHOP_ITEMS:
+			save_to_csv(items, numberOfItems, "shop_items.csv");
 			break;
 		case CREATE_EMPLOYEES:
 			break;
