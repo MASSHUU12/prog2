@@ -16,6 +16,9 @@ int main(void)
 	Item* items = nullptr;
 	size_t numberOfItems = 0;
 
+	Employee* employees = nullptr;
+	size_t numberOfEmployees = 0;
+
 	do
 	{
 		menu();
@@ -47,13 +50,13 @@ int main(void)
 		switch (validatedInput)
 		{
 		case CREATE_SHOP_ITEMS:
-			shop::createItems(items, numberOfItems);
+			shop::fill(items, numberOfItems);
 			break;
 		case SHOW_SHOP_ITEMS:
-			shop::showItems(items, numberOfItems);
+			shop::show(items, numberOfItems);
 			break;
 		case DELETE_SHOP_ITEMS:
-			shop::deleteItems(items, numberOfItems);
+			shop::deleteAll(items, numberOfItems);
 			break;
 		case EDIT_SHOP_ITEM:
 			shop::edit(items, numberOfItems);

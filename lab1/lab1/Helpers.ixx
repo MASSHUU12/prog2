@@ -43,14 +43,6 @@ export void inline clearScreen(void) {
 	#endif
 }
 
-export void create(Item*& item) {
-	item = new Item;
-}
-
-export void create(Item*& item, const size_t size) {
-	item = new Item[size];
-}
-
 export void pause(const char str) {
 	std::cout << str;
 
