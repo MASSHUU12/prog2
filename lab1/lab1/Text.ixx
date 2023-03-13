@@ -1,7 +1,5 @@
 export module Text;
 
-import <iostream>;
-
 export namespace text {
 	/*
 	* 
