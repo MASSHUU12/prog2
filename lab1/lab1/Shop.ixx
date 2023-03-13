@@ -128,7 +128,7 @@ export namespace shop {
 			if (i % 2 == 0)
 			{
 				std::cout << text::BG_GREEN << text::FG_BLACK
-					<< employees[i].name << "    " << employees[i].age << text::RESET;
+					<< employees[i].name << "    " << employees[i].age << text::RESET << "\n";
 				continue;
 			}
 			std::cout << employees[i].name << "    " << employees[i].age << "\n";
