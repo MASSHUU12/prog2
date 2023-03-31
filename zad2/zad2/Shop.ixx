@@ -59,14 +59,14 @@ export namespace shop {
 			clearScreen();
 		}
 
-		numberOfItems = random::getRandomNumber(1, 32);
+		numberOfItems = Random::getRandomNumber(1, 32);
 
 		create(items, numberOfItems);
 
 		for (size_t i = 0; i < numberOfItems; i++)
 		{
-			items[i].name = random::getRandomString(random::getRandomNumber(1, 32));
-			items[i].price = random::getRandomNumber(0.1, 999.9, 2);
+			items[i].name = Random::getRandomString(Random::getRandomNumber(1, 32));
+			items[i].price = Random::getRandomNumber(0.1, 999.9, 2);
 		}
 
 		Logger::ok("Shop items created");
@@ -79,14 +79,14 @@ export namespace shop {
 			clearScreen();
 		}
 
-		numberOfEmployees = random::getRandomNumber(1, 32);
+		numberOfEmployees = Random::getRandomNumber(1, 32);
 
 		create(employees, numberOfEmployees);
 
 		for (size_t i = 0; i < numberOfEmployees; i++)
 		{
-			employees[i].name = random::getRandomString(random::getRandomNumber(1, 32));
-			employees[i].age = random::getRandomNumber(18, 100);
+			employees[i].name = Random::getRandomString(Random::getRandomNumber(1, 32));
+			employees[i].age = Random::getRandomNumber(18, 100);
 		}
 
 		Logger::ok("Shop employees created");

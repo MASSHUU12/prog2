@@ -6,8 +6,9 @@ import <string>;
 import <sstream>;
 import <cmath>;
 
-export namespace random {
-	int getRandomNumber(int min, int max) {
+export class Random {
+public:
+	static int getRandomNumber(int min, int max) {
 		std::random_device rd;
 		std::mt19937 eng(rd());
 		std::uniform_int_distribution<> distr(min, max);
@@ -15,7 +16,7 @@ export namespace random {
 		return distr(eng);
 	}
 
-	double getRandomNumber(double min, double max) {
+	static double getRandomNumber(double min, double max) {
 		std::random_device rd;
 		std::mt19937 eng(rd());
 		std::uniform_real_distribution<double> distr(min, max);
@@ -23,7 +24,7 @@ export namespace random {
 		return distr(eng);
 	}
 
-	double getRandomNumber(double min, double max, int precision) {
+	static double getRandomNumber(double min, double max, int precision) {
 		std::random_device rd;
 		std::mt19937 gen(rd());
 		std::uniform_real_distribution<double> dist(min, max);
@@ -34,7 +35,7 @@ export namespace random {
 		return std::round(rand_num * factor) / factor;
 	}
 
-	std::string getRandomString(int length) {
+	static std::string getRandomString(int length) {
 		std::random_device rd;
 		std::mt19937 eng(rd());
 		std::uniform_int_distribution<> distr(0, 25);
@@ -46,4 +47,4 @@ export namespace random {
 		}
 		return str;
 	}
-}
+};
