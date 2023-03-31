@@ -72,7 +72,7 @@ export void saveToCsv(const Item* items, const int length, const std::string& fi
 	// Write the data for each item
 	for (size_t i = 0; i < length; i++)
 	{
-		file << items[i].name << "," << items[i].price << "\n";
+		file << items[i].getName() << "," << items[i].getPrice() << "\n";
 	}
 
 	file.close();
