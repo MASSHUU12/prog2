@@ -41,7 +41,7 @@ int main(void)
 		{
 			clearScreen();
 
-			logger::error(std::string("Invalid input: ") + e.what() + "\n");
+			Logger::error(std::string("Invalid input: ") + e.what() + "\n");
 			continue;
 		}
 
@@ -80,7 +80,7 @@ int main(void)
 			saveToCsv(employees, numberOfEmployees, "shop_employees.csv");
 			break;
 		default:
-			logger::error(std::string("Invalid input: Such an option doesn't exist") + "\n");
+			Logger::error(std::string("Invalid input: Such an option doesn't exist") + "\n");
 			break;
 		}
 		

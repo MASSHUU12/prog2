@@ -4,16 +4,17 @@ import <iostream>;
 
 import Text;
 
-export namespace logger {
-	void error(const std::string& str) {
-		std::cout << text::BG_RED << str << text::RESET << "\n";
+export class Logger {
+public:
+	static void error(const std::string& str) {
+		std::cout << Text::BG_RED << str << Text::RESET << "\n";
 	}
 
-	void warning(const std::string& str) {
-		std::cout << text::BG_YELLOW << text::FG_BLACK << str << text::RESET << "\n";
+	static void warning(const std::string& str) {
+		std::cout << Text::BG_YELLOW << Text::FG_BLACK << str << Text::RESET << "\n";
 	}
 
-	void ok(const std::string& str) {
-		std::cout << text::FG_GREEN << str << text::RESET << "\n";
+	static void ok(const std::string& str) {
+		std::cout << Text::FG_GREEN << str << Text::RESET << "\n";
 	}
-}
+};

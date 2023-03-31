@@ -28,7 +28,7 @@ export namespace shop {
 
 	void deleteAll(Item*& items, size_t& length) {
 		if (items == nullptr) {
-			logger::warning("There is no items to delete");
+			Logger::warning("There is no items to delete");
 			return;
 		}
 		delete[] items;
@@ -36,12 +36,12 @@ export namespace shop {
 		items = nullptr;
 		length = 0;
 
-		logger::ok("Shop items deleted");
+		Logger::ok("Shop items deleted");
 	}
 
 	void deleteAll(Employee*& employees, size_t& length) {
 		if (employees == nullptr) {
-			logger::warning("There is no employees to delete");
+			Logger::warning("There is no employees to delete");
 			return;
 		}
 		delete[] employees;
@@ -49,7 +49,7 @@ export namespace shop {
 		employees = nullptr;
 		length = 0;
 
-		logger::ok("Shop employees deleted");
+		Logger::ok("Shop employees deleted");
 	}
 
 	void fill(Item*& items, size_t& numberOfItems) {
@@ -69,7 +69,7 @@ export namespace shop {
 			items[i].price = random::getRandomNumber(0.1, 999.9, 2);
 		}
 
-		logger::ok("Shop items created");
+		Logger::ok("Shop items created");
 	}
 
 	void fill(Employee*& employees, size_t& numberOfEmployees) {
@@ -89,13 +89,13 @@ export namespace shop {
 			employees[i].age = random::getRandomNumber(18, 100);
 		}
 
-		logger::ok("Shop employees created");
+		Logger::ok("Shop employees created");
 	}
 
 	void show(Item*& items, const size_t length) {
 		if (items == nullptr)
 		{
-			logger::warning("There is no items to show");
+			Logger::warning("There is no items to show");
 			return;
 		}
 
@@ -103,14 +103,14 @@ export namespace shop {
 		{
 			if (i % 2 == 0)
 			{
-				std::cout << text::BG_GREEN << text::FG_BLACK
+				std::cout << Text::BG_GREEN << Text::FG_BLACK
 					<< items[i].name << "    " << items[i].price
-					<< " PLN\n" << text::RESET;
+					<< " PLN\n" << Text::RESET;
 				continue;
 			}
 			std::cout << items[i].name << "    " << items[i].price << " PLN\n";
 		}
-		logger::ok("END");
+		Logger::ok("END");
 
 		pause("\nPress any key to continue...");
 		clearScreen();
@@ -119,7 +119,7 @@ export namespace shop {
 	void show(Employee*& employees, const size_t length) {
 		if (employees == nullptr)
 		{
-			logger::warning("There is no employees to show");
+			Logger::warning("There is no employees to show");
 			return;
 		}
 
@@ -127,13 +127,13 @@ export namespace shop {
 		{
 			if (i % 2 == 0)
 			{
-				std::cout << text::BG_GREEN << text::FG_BLACK
-					<< employees[i].name << "    " << employees[i].age << text::RESET << "\n";
+				std::cout << Text::BG_GREEN << Text::FG_BLACK
+					<< employees[i].name << "    " << employees[i].age << Text::RESET << "\n";
 				continue;
 			}
 			std::cout << employees[i].name << "    " << employees[i].age << "\n";
 		}
-		logger::ok("END");
+		Logger::ok("END");
 
 		pause("\nPress any key to continue...");
 		clearScreen();
@@ -147,7 +147,7 @@ export namespace shop {
 
 		if (items == nullptr)
 		{
-			logger::warning("There is no items to edit");
+			Logger::warning("There is no items to edit");
 			return;
 		}
 
@@ -164,13 +164,13 @@ export namespace shop {
 			}
 			catch (const std::invalid_argument& e)
 			{
-				logger::error(std::string("Invalid input: ") + e.what() + "\n");
+				Logger::error(std::string("Invalid input: ") + e.what() + "\n");
 				continue;
 			}
 
 			if (validatedInput >= length || validatedInput < 0)
 			{
-				logger::error("Invalid input: The number specified exceeds the acceptable range");
+				Logger::error("Invalid input: The number specified exceeds the acceptable range");
 				continue;
 			}
 
@@ -181,7 +181,7 @@ export namespace shop {
 		Item item = items[index];
 
 		std::cout << "You're editing:\n";
-		logger::warning(item.name + std::string("    ") + std::to_string(item.price));
+		Logger::warning(item.name + std::string("    ") + std::to_string(item.price));
 
 		std::cout << "\nNew name: ";
 		std::cin >> input;
@@ -199,7 +199,7 @@ export namespace shop {
 			}
 			catch (const std::invalid_argument& e)
 			{
-				logger::error(std::string("Invalid input: ") + e.what() + "\n");
+				Logger::error(std::string("Invalid input: ") + e.what() + "\n");
 				continue;
 			}
 			break;
@@ -216,7 +216,7 @@ export namespace shop {
 
 		if (employees == nullptr)
 		{
-			logger::warning("There is no employees to edit");
+			Logger::warning("There is no employees to edit");
 			return;
 		}
 
@@ -233,13 +233,13 @@ export namespace shop {
 			}
 			catch (const std::invalid_argument& e)
 			{
-				logger::error(std::string("Invalid input: ") + e.what() + "\n");
+				Logger::error(std::string("Invalid input: ") + e.what() + "\n");
 				continue;
 			}
 
 			if (validatedInput >= length || validatedInput < 0)
 			{
-				logger::error("Invalid input: The number specified exceeds the acceptable range");
+				Logger::error("Invalid input: The number specified exceeds the acceptable range");
 				continue;
 			}
 
@@ -250,7 +250,7 @@ export namespace shop {
 		Employee employee = employees[index];
 
 		std::cout << "You're editing:\n";
-		logger::warning(employee.name + std::string("    ") + std::to_string(employee.age));
+		Logger::warning(employee.name + std::string("    ") + std::to_string(employee.age));
 
 		std::cout << "\nNew name: ";
 		std::cin >> input;
@@ -268,7 +268,7 @@ export namespace shop {
 			}
 			catch (const std::invalid_argument& e)
 			{
-				logger::error(std::string("Invalid input: ") + e.what() + "\n");
+				Logger::error(std::string("Invalid input: ") + e.what() + "\n");
 				continue;
 			}
 			break;

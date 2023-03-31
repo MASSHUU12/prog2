@@ -59,7 +59,7 @@ export void pause(const std::string& str) {
 
 export void saveToCsv(const Item* items, const int length, const std::string& fileName) {
 	if (items == nullptr) {
-		logger::warning("There is no items to save");
+		Logger::warning("There is no items to save");
 		return;
 	}
 
@@ -77,12 +77,12 @@ export void saveToCsv(const Item* items, const int length, const std::string& fi
 
 	file.close();
 
-	logger::ok("Items saved to: " + fileName);
+	Logger::ok("Items saved to: " + fileName);
 }
 
 export void saveToCsv(const Employee* employees, const int length, const std::string& fileName) {
 	if (employees == nullptr) {
-		logger::warning("There is no employees to save");
+		Logger::warning("There is no employees to save");
 		return;
 	}
 
@@ -100,5 +100,5 @@ export void saveToCsv(const Employee* employees, const int length, const std::st
 
 	file.close();
 
-	logger::ok("Employees saved to: " + fileName);
+	Logger::ok("Employees saved to: " + fileName);
 }
