@@ -19,7 +19,7 @@ export namespace shop {
 	}
 
 	void create(Employee*& item) {
-		item = new Employee;
+		item = new Employee("", 0);
 	}
 
 	void create(Employee*& item, const size_t size) {
@@ -85,8 +85,8 @@ export namespace shop {
 
 		for (size_t i = 0; i < numberOfEmployees; i++)
 		{
-			employees[i].name = Random::getRandomString(Random::getRandomNumber(1, 32));
-			employees[i].age = Random::getRandomNumber(18, 100);
+			employees[i].setName(Random::getRandomString(Random::getRandomNumber(1, 32)));
+			employees[i].setAge(Random::getRandomNumber(18, 100));
 		}
 
 		Logger::ok("Shop employees created");
@@ -128,10 +128,10 @@ export namespace shop {
 			if (i % 2 == 0)
 			{
 				std::cout << Text::BG_GREEN << Text::FG_BLACK
-					<< employees[i].name << "    " << employees[i].age << Text::RESET << "\n";
+					<< employees[i].getName() << "    " << employees[i].getAge() << Text::RESET << "\n";
 				continue;
 			}
-			std::cout << employees[i].name << "    " << employees[i].age << "\n";
+			std::cout << employees[i].getName() << "    " << employees[i].getAge() << "\n";
 		}
 		Logger::ok("END");
 
@@ -250,12 +250,12 @@ export namespace shop {
 		Employee employee = employees[index];
 
 		std::cout << "You're editing:\n";
-		Logger::warning(employee.name + std::string("    ") + std::to_string(employee.age));
+		Logger::warning(employee.getName() + std::string("    ") + std::to_string(employee.getAge()));
 
 		std::cout << "\nNew name: ";
 		std::cin >> input;
 
-		employees[index].name = input;
+		employees[index].setName(input);
 
 		do
 		{
@@ -274,6 +274,6 @@ export namespace shop {
 			break;
 		} while (true);
 
-		employees[index].age = validatedIInput;
+		employees[index].setAge(validatedIInput);
 	}
 }

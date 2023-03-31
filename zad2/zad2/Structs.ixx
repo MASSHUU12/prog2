@@ -33,7 +33,32 @@ public:
     }
 };
 
-export struct Employee {
+export class Employee {
+private:
 	std::string name;
 	int age;
+
+public:
+    Employee() {
+        this->name = "";
+        this->age = 0;
+    }
+
+    Employee(const std::string& name, int age) : name(name), age(age) {}
+
+    std::string getName() const {
+        return name;
+    }
+
+    void setName(const std::string& newName) {
+        name = newName;
+    }
+
+    int getAge() const {
+        return age;
+    }
+
+    void setAge(int newAge) {
+        age = newAge;
+    }
 };

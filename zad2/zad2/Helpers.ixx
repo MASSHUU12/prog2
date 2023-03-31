@@ -95,7 +95,7 @@ export void saveToCsv(const Employee* employees, const int length, const std::st
 	// Write the data for each item
 	for (size_t i = 0; i < length; i++)
 	{
-		file << employees[i].name << "," << employees[i].age << "\n";
+		file << employees[i].getName() << "," << employees[i].getAge() << "\n";
 	}
 
 	file.close();
