@@ -9,24 +9,26 @@ import Helpers;
 import Text;
 import Logger;
 
-export namespace shop {
-	void create(Item*& item) {
+export class Shop {
+public:
+	virtual void create() = 0;
+	virtual void deleteAll() = 0;
+	virtual void fill() = 0;
+	virtual void show() = 0;
+	virtual void edit() = 0;
+};
+
+export class ItemManager : public Shop {
+public:
+	void static create(Item*& item) {
 		item = new Item("", 0.0);
 	}
 
-	void create(Item*& item, const size_t size) {
+	void static create(Item*& item, const size_t size) {
 		item = new Item[size];
 	}
 
-	void create(Employee*& item) {
-		item = new Employee("", 0);
-	}
-
-	void create(Employee*& item, const size_t size) {
-		item = new Employee[size];
-	}
-
-	void deleteAll(Item*& items, size_t& length) {
+	void static deleteAll(Item*& items, size_t& length) {
 		if (items == nullptr) {
 			Logger::warning("There is no items to delete");
 			return;
@@ -39,20 +41,7 @@ export namespace shop {
 		Logger::ok("Shop items deleted");
 	}
 
-	void deleteAll(Employee*& employees, size_t& length) {
-		if (employees == nullptr) {
-			Logger::warning("There is no employees to delete");
-			return;
-		}
-		delete[] employees;
-
-		employees = nullptr;
-		length = 0;
-
-		Logger::ok("Shop employees deleted");
-	}
-
-	void fill(Item*& items, size_t& numberOfItems) {
+	void static fill(Item*& items, size_t& numberOfItems) {
 		if (items != nullptr)
 		{
 			deleteAll(items, numberOfItems);
@@ -72,27 +61,7 @@ export namespace shop {
 		Logger::ok("Shop items created");
 	}
 
-	void fill(Employee*& employees, size_t& numberOfEmployees) {
-		if (employees != nullptr)
-		{
-			deleteAll(employees, numberOfEmployees);
-			clearScreen();
-		}
-
-		numberOfEmployees = Random::getRandomNumber(1, 32);
-
-		create(employees, numberOfEmployees);
-
-		for (size_t i = 0; i < numberOfEmployees; i++)
-		{
-			employees[i].setName(Random::getRandomString(Random::getRandomNumber(1, 32)));
-			employees[i].setAge(Random::getRandomNumber(18, 100));
-		}
-
-		Logger::ok("Shop employees created");
-	}
-
-	void show(Item*& items, const size_t length) {
+	void static show(Item*& items, const size_t length) {
 		if (items == nullptr)
 		{
 			Logger::warning("There is no items to show");
@@ -104,11 +73,11 @@ export namespace shop {
 			if (i % 2 == 0)
 			{
 				std::cout << Text::BG_GREEN << Text::FG_BLACK
-					<< items[i].getName() << "    " << items[i].getPrice()
+					<< items[i].getName() << "  " << items[i].getPrice()
 					<< " PLN\n" << Text::RESET;
 				continue;
 			}
-			std::cout << items[i].getName() << "    " << items[i].getPrice() << " PLN\n";
+			std::cout << items[i].getName() << "  " << items[i].getPrice() << " PLN\n";
 		}
 		Logger::ok("END");
 
@@ -116,30 +85,7 @@ export namespace shop {
 		clearScreen();
 	}
 
-	void show(Employee*& employees, const size_t length) {
-		if (employees == nullptr)
-		{
-			Logger::warning("There is no employees to show");
-			return;
-		}
-
-		for (size_t i = 0; i < length; i++)
-		{
-			if (i % 2 == 0)
-			{
-				std::cout << Text::BG_GREEN << Text::FG_BLACK
-					<< employees[i].getName() << "    " << employees[i].getAge() << Text::RESET << "\n";
-				continue;
-			}
-			std::cout << employees[i].getName() << "    " << employees[i].getAge() << "\n";
-		}
-		Logger::ok("END");
-
-		pause("\nPress any key to continue...");
-		clearScreen();
-	}
-
-	void edit(Item*& items, const size_t length) {
+	void static edit(Item*& items, const size_t length) {
 		std::string input;
 		int validatedInput;
 		double validatedDInput;
@@ -181,7 +127,7 @@ export namespace shop {
 		Item item = items[index];
 
 		std::cout << "You're editing:\n";
-		Logger::warning(item.getName() + std::string("    ") + std::to_string(item.getPrice()));
+		Logger::warning(item.getName() + std::string("  ") + std::to_string(item.getPrice()));
 
 		std::cout << "\nNew name: ";
 		std::cin >> input;
@@ -207,8 +153,75 @@ export namespace shop {
 
 		items[index].setPrice(validatedDInput);
 	}
+};
 
-	void edit(Employee*& employees, const size_t length) {
+export class EmployeeManager : public Shop {
+public:
+	void static create(Employee*& item) {
+		item = new Employee("", 0);
+	}
+
+	void static create(Employee*& item, const size_t size) {
+		item = new Employee[size];
+	}
+
+	void static deleteAll(Employee*& employees, size_t& length) {
+		if (employees == nullptr) {
+			Logger::warning("There is no employees to delete");
+			return;
+		}
+		delete[] employees;
+
+		employees = nullptr;
+		length = 0;
+
+		Logger::ok("Shop employees deleted");
+	}
+
+	void static fill(Employee*& employees, size_t& numberOfEmployees) {
+		if (employees != nullptr)
+		{
+			deleteAll(employees, numberOfEmployees);
+			clearScreen();
+		}
+
+		numberOfEmployees = Random::getRandomNumber(1, 32);
+
+		create(employees, numberOfEmployees);
+
+		for (size_t i = 0; i < numberOfEmployees; i++)
+		{
+			employees[i].setName(Random::getRandomString(Random::getRandomNumber(1, 32)));
+			employees[i].setAge(Random::getRandomNumber(18, 100));
+		}
+
+		Logger::ok("Shop employees created");
+	}
+
+	void static show(Employee*& employees, const size_t length) {
+		if (employees == nullptr)
+		{
+			Logger::warning("There is no employees to show");
+			return;
+		}
+
+		for (size_t i = 0; i < length; i++)
+		{
+			if (i % 2 == 0)
+			{
+				std::cout << Text::BG_GREEN << Text::FG_BLACK
+					<< employees[i].getName() << "  " << employees[i].getAge() << Text::RESET << "\n";
+				continue;
+			}
+			std::cout << employees[i].getName() << "  " << employees[i].getAge() << "\n";
+		}
+		Logger::ok("END");
+
+		pause("\nPress any key to continue...");
+		clearScreen();
+	}
+
+	void static edit(Employee*& employees, const size_t length) {
 		std::string input;
 		int validatedInput;
 		int validatedIInput;
@@ -250,7 +263,7 @@ export namespace shop {
 		Employee employee = employees[index];
 
 		std::cout << "You're editing:\n";
-		Logger::warning(employee.getName() + std::string("    ") + std::to_string(employee.getAge()));
+		Logger::warning(employee.getName() + std::string("  ") + std::to_string(employee.getAge()));
 
 		std::cout << "\nNew name: ";
 		std::cin >> input;
@@ -276,4 +289,4 @@ export namespace shop {
 
 		employees[index].setAge(validatedIInput);
 	}
-}
+};

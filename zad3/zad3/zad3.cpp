@@ -50,31 +50,31 @@ int main(void)
 		switch (validatedInput)
 		{
 		case CREATE_SHOP_ITEMS:
-			shop::fill(items, numberOfItems);
+			ItemManager::fill(items, numberOfItems);
 			break;
 		case SHOW_SHOP_ITEMS:
-			shop::show(items, numberOfItems);
+			ItemManager::show(items, numberOfItems);
 			break;
 		case DELETE_SHOP_ITEMS:
-			shop::deleteAll(items, numberOfItems);
+			ItemManager::deleteAll(items, numberOfItems);
 			break;
 		case EDIT_SHOP_ITEM:
-			shop::edit(items, numberOfItems);
+			ItemManager::edit(items, numberOfItems);
 			break;
 		case SAVE_SHOP_ITEMS:
 			saveToCsv(items, numberOfItems, "shop_items.csv");
 			break;
 		case CREATE_EMPLOYEES:
-			shop::fill(employees, numberOfEmployees);
+			EmployeeManager::fill(employees, numberOfEmployees);
 			break;
 		case SHOW_EMPLOYEES:
-			shop::show(employees, numberOfEmployees);
+			EmployeeManager::show(employees, numberOfEmployees);
 			break;
 		case DELETE_EMPLOYEES:
-			shop::deleteAll(employees, numberOfEmployees);
+			EmployeeManager::deleteAll(employees, numberOfEmployees);
 			break;
 		case EDIT_EMPLOYEE:
-			shop::edit(employees, numberOfEmployees);
+			EmployeeManager::edit(employees, numberOfEmployees);
 			break;
 		case SAVE_EMPLOYEES:
 			saveToCsv(employees, numberOfEmployees, "shop_employees.csv");
