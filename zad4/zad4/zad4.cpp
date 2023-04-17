@@ -61,9 +61,16 @@ int main(void)
 		case EDIT_SHOP_ITEM:
 			ItemManager::edit(items, numberOfItems);
 			break;
-		case SAVE_SHOP_ITEMS:
-			saveToCsv(items, numberOfItems, "shop_items.csv");
+		case SAVE_SHOP_ITEMS: {
+			std::string fileName = "shop_items.csv";
+			SaveData data = {
+				items,
+				static_cast<int>(numberOfItems),
+				fileName
+			};
+			std::cout << data;
 			break;
+		}
 		case CREATE_EMPLOYEES:
 			EmployeeManager::fill(employees, numberOfEmployees);
 			break;
@@ -76,9 +83,16 @@ int main(void)
 		case EDIT_EMPLOYEE:
 			EmployeeManager::edit(employees, numberOfEmployees);
 			break;
-		case SAVE_EMPLOYEES:
-			saveToCsv(employees, numberOfEmployees, "shop_employees.csv");
+		case SAVE_EMPLOYEES: {
+			std::string fileName = "shop_employees.csv";
+			SaveData data = {
+				employees,
+				static_cast<int>(numberOfEmployees),
+				fileName
+			};
+			std::cout << data;
 			break;
+		}
 		default:
 			Logger::error(std::string("Invalid input: Such an option doesn't exist") + "\n");
 			break;

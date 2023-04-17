@@ -57,48 +57,52 @@ export void pause(const std::string& str) {
 	std::cin.ignore(); // Wait for user to press enter
 }
 
-export void saveToCsv(const Item* items, const int length, const std::string& fileName) {
-	if (items == nullptr) {
-		Logger::warning("There is no items to save");
+export template<class T>
+struct SaveData {
+	T* data;
+	const int length;
+	const std::string& fileName;
+
+	SaveData(T* data, const int length, const std::string& fileName)
+		: data(data), length(length), fileName(fileName) {}
+};
+
+export template <typename T>
+void saveToCsv(const SaveData<T>& saveData) {
+	if (saveData.length <= 0) {
+		Logger::warning("There is no data to save");
 		return;
 	}
 
 	// Open the file for writing
-	std::ofstream file(fileName);
+	std::ofstream file(saveData.fileName);
 
 	// Write column headers
-	file << "Name,Price\n";
+	file << "Name,";
+	if constexpr (std::is_same_v<T, Item>)
+		file << "Price\n";
+	else if constexpr (std::is_same_v<T, Employee>)
+		file << "Age\n";
 
 	// Write the data for each item
-	for (size_t i = 0; i < length; i++)
-	{
-		file << items[i].getName() << "," << items[i].getPrice() << "\n";
+	for (size_t i = 0; i < saveData.length; i++) {
+		file << saveData.data[i].getName() << ",";
+		if constexpr (std::is_same_v<T, Item>)
+			file << saveData.data[i].getPrice() << "\n";
+		else if constexpr (std::is_same_v<T, Employee>)
+			file << saveData.data[i].getAge() << "\n";
 	}
 
 	file.close();
 
-	Logger::ok("Items saved to: " + fileName);
+	if constexpr (std::is_same_v<T, Item>)
+		Logger::ok("Items saved to: " + saveData.fileName);
+	else if constexpr (std::is_same_v<T, Employee>)
+		Logger::ok("Employees saved to: " + saveData.fileName);
 }
 
-export void saveToCsv(const Employee* employees, const int length, const std::string& fileName) {
-	if (employees == nullptr) {
-		Logger::warning("There is no employees to save");
-		return;
-	}
-
-	// Open the file for writing
-	std::ofstream file(fileName);
-
-	// Write column headers
-	file << "Name,Age\n";
-
-	// Write the data for each item
-	for (size_t i = 0; i < length; i++)
-	{
-		file << employees[i].getName() << "," << employees[i].getAge() << "\n";
-	}
-
-	file.close();
-
-	Logger::ok("Employees saved to: " + fileName);
+export template <typename T>
+std::ostream& operator<<(std::ostream& os, const SaveData<T>& data) {
+	saveToCsv(data);
+	return os;
 }
