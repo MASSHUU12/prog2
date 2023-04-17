@@ -4,6 +4,7 @@ import <iostream>;
 import <string>;
 import <random>;
 import <fstream>;
+import <cstring>;
 
 import Structs;
 import Logger;
@@ -112,13 +113,13 @@ private:
 	char* str;
 public:
 	CustomString(const char* s = "") {
-		str = new char[strlen(s) + 1];
-		strcpy(str, s);
+		str = new char[std::strlen(s) + 1];
+		strcpy_s(str, std::strlen(s) + 1, s);
 	}
 
 	CustomString(const CustomString& s) {
-		str = new char[strlen(s.str) + 1];
-		strcpy(str, s.str);
+		str = new char[std::strlen(s.str) + 1];
+		strcpy_s(str, std::strlen(s.str) + 1, s.str);
 	}
 
 	~CustomString() {
@@ -135,10 +136,10 @@ public:
 
 		// Free the existing memory and create a new char array of the appropriate size
 		delete[] str;
-		str = new char[strlen(s.str) + 1];
+		str = new char[std::strlen(s.str) + 1];
 
 		// Copy the input string
-		strcpy(str, s.str);
+		strcpy_s(str, std::strlen(s.str) + 1, s.str);
 
 		// Return a reference to this object
 		return *this;
@@ -147,5 +148,20 @@ public:
 	// Prints the char array to the console
 	void display() {
 		std::cout << str << std::endl;
+	}
+
+	// [] overloading
+	char& operator[](int index) {
+		if (index < 0 || index >= strlen(str)) {
+			throw std::out_of_range("Index out of range");
+		}
+		return str[index];
+	}
+
+	const char& operator[](int index) const {
+		if (index < 0 || index >= strlen(str)) {
+			throw std::out_of_range("Index out of range");
+		}
+		return str[index];
 	}
 };
