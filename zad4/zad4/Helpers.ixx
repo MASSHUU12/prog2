@@ -106,3 +106,46 @@ std::ostream& operator<<(std::ostream& os, const SaveData<T>& data) {
 	saveToCsv(data);
 	return os;
 }
+
+export class CustomString {
+private:
+	char* str;
+public:
+	CustomString(const char* s = "") {
+		str = new char[strlen(s) + 1];
+		strcpy(str, s);
+	}
+
+	CustomString(const CustomString& s) {
+		str = new char[strlen(s.str) + 1];
+		strcpy(str, s.str);
+	}
+
+	~CustomString() {
+		delete[] str;
+	}
+
+	// Assignment operator that takes a CustomString object as input
+	// and returns a reference to this object
+	CustomString& operator=(const CustomString& s) {
+		// Check for self-assignment
+		if (this == &s) {
+			return *this;
+		}
+
+		// Free the existing memory and create a new char array of the appropriate size
+		delete[] str;
+		str = new char[strlen(s.str) + 1];
+
+		// Copy the input string
+		strcpy(str, s.str);
+
+		// Return a reference to this object
+		return *this;
+	}
+
+	// Prints the char array to the console
+	void display() {
+		std::cout << str << std::endl;
+	}
+};
