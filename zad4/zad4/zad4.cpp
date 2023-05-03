@@ -66,14 +66,20 @@ int main(void)
 			std::string fileName = "shop_items.csv";
 			SaveData data = {
 				items,
-				static_cast<int>(numberOfItems),
+				numberOfItems,
 				fileName
 			};
 			std::cout << data;
 			break;
 		}
 		case IMPORT_SHOP_ITEMS: {
-			std::puts("hhh");
+			std::string fileName = "shop_items.csv";
+			ReadData data = {
+				items,
+				numberOfItems,
+				fileName
+			};
+			std::cin >> data;
 			break;
 		}
 		case CREATE_EMPLOYEES:
@@ -92,14 +98,20 @@ int main(void)
 			std::string fileName = "shop_employees.csv";
 			SaveData data = {
 				employees,
-				static_cast<int>(numberOfEmployees),
+				numberOfEmployees,
 				fileName
 			};
 			std::cout << data;
 			break;
 		}
 		case IMPORT_EMPLOYEES: {
-			std::puts("hhh");
+			std::string fileName = "shop_employees.csv";
+			ReadData data = {
+				employees,
+				numberOfEmployees,
+				fileName
+			};
+			std::cin >> data;
 			break;
 		}
 		default:

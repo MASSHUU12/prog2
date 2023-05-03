@@ -9,14 +9,15 @@ import <cstring>;
 import Structs;
 import Logger;
 import Shop;
+import Helpers;
 
 export template<class T>
 struct SaveData {
 	T* data;
-	const int& length;
+	size_t& length;
 	const std::string& fileName;
 
-	SaveData(T* data, const int length, const std::string& fileName)
+	SaveData(T* data, size_t length, const std::string& fileName)
 		: data(data), length(length), fileName(fileName) {}
 };
 
@@ -55,24 +56,77 @@ void saveToCsv(const SaveData<T>& saveData) {
 }
 
 export template<class T>
-void readFromCsv(const SaveData<T>& saveData) {
+struct ReadData {
+	T*& data;
+	size_t& length;
+	const std::string& fileName;
+
+	ReadData(T*& data, size_t& length, const std::string& fileName)
+		: data(data), length(length), fileName(fileName) {}
+};
+
+export template<class T>
+void readFromCsv(ReadData<T> readData) {
 	if constexpr (std::is_same_v<T, Item>)
-		ItemManager::deleteAll();
+		ItemManager::deleteAll(readData.data, readData.length);
 	if constexpr (std::is_same_v<T, Employee>)
-		EmployeeManager::deleteAll();
+		EmployeeManager::deleteAll(readData.data, readData.length);
 
-	std::ifstream file(saveData.fileName);
-	T item;
-	saveData.length = 0;
-
-	while (file >> item) {
-		saveData.length++;
-		saveData.data.push_back(item);
+	std::ifstream file(readData.fileName);
+	if (!file.is_open()) {
+		Logger::error("Error: Unable to open file " + readData.fileName);
+		return;
 	}
+
+	std::string item;
+	std::vector<std::string> items;
+
+	// Discard first line
+	std::getline(file, item);
+
+	// Read the rest of the file
+	while (file >> item) {
+		items.push_back(item);
+	}
+
+	readData.data = new T[items.size()];
+	readData.length = items.size();
+
+	if constexpr (std::is_same_v<T, Item>)
+		for (size_t i = 0; i < items.size(); i++)
+		{
+			std::vector<std::string> itemElement = splitString(items[i], ',');
+
+			if (itemElement.size() >= 2)
+			{
+				readData.data[i].setName(itemElement[0]);
+				readData.data[i].setPrice(stringToNumber<double>(itemElement[1]));
+			}
+		}
+	if constexpr (std::is_same_v<T, Employee>)
+		for (size_t i = 0; i < items.size(); i++)
+		{
+			std::vector<std::string> employeeElement = splitString(items[i], ',');
+
+			if (employeeElement.size() >= 2)
+			{
+				readData.data[i].setName(employeeElement[0]);
+				readData.data[i].setAge(stringToNumber<int>(employeeElement[1]));
+			}
+		}
+	file.close();
+
+	Logger::ok("File " + readData.fileName + " imported");
 }
 
 export template <typename T>
 std::ostream& operator<<(std::ostream& os, const SaveData<T>& data) {
 	saveToCsv(data);
 	return os;
+}
+
+export template <typename T>
+std::istream& operator>>(std::istream& is, ReadData<T>& data) {
+	readFromCsv(data);
+	return is;
 }
