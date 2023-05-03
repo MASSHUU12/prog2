@@ -39,7 +39,10 @@
     <ClCompile Include="Logger.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="zad2.cpp">
+    <ClCompile Include="zad4.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CSV.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

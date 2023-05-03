@@ -1,6 +1,9 @@
 export module Structs;
 
 import <iostream>;
+import <vector>;
+import <sstream>;
+import <string>;
 
 export class Item
 {
@@ -62,3 +65,17 @@ public:
         age = newAge;
     }
 };
+
+export std::istream& operator>>(std::istream& is, Item& item) {
+    std::string line;
+    if (std::getline(is, line)) {
+        std::stringstream ss(line);
+        std::string name;
+        double price;
+        if (std::getline(ss, name, ',') && ss >> price) {
+            item.setName(name);
+            item.setPrice(price);
+        }
+    }
+    return is;
+}

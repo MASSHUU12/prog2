@@ -132,6 +132,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CSV.ixx" />
     <ClCompile Include="Logger.ixx" />
     <ClCompile Include="Text.ixx" />
     <ClCompile Include="Enums.ixx" />
