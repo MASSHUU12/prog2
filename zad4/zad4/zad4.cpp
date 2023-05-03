@@ -72,6 +72,10 @@ int main(void)
 			std::cout << data;
 			break;
 		}
+		case IMPORT_SHOP_ITEMS: {
+			std::puts("hhh");
+			break;
+		}
 		case CREATE_EMPLOYEES:
 			EmployeeManager::fill(employees, numberOfEmployees);
 			break;
@@ -92,6 +96,10 @@ int main(void)
 				fileName
 			};
 			std::cout << data;
+			break;
+		}
+		case IMPORT_EMPLOYEES: {
+			std::puts("hhh");
 			break;
 		}
 		default:
