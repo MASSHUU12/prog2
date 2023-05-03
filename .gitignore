@@ -588,3 +588,5 @@ FodyWeavers.xsd
 
 .vscode
 .csv
+
+*.csv
