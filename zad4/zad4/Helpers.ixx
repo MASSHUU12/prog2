@@ -5,6 +5,7 @@ import <string>;
 import <random>;
 import <fstream>;
 import <cstring>;
+import <vector>;
 
 import Structs;
 import Logger;
@@ -26,12 +27,55 @@ export int stringToInt(const std::string& str)
 	return std::stoi(str);
 }
 
+export template<typename T>
+T stringToNumber(const std::string& str)
+{
+	// Check that the input string is not empty
+	if (str.empty())
+		throw std::invalid_argument("Input string is empty");
+
+	// Create a string stream to parse the input string
+	std::istringstream ss(str);
+
+	// Try to extract a value of type T from the string stream
+	T value;
+	ss >> value;
+
+	// Check that the extraction was successful and that there are no trailing characters
+	if (ss.fail() || !ss.eof())
+		throw std::invalid_argument("Input string contains non-numeric characters");
+
+	return value;
+}
+
 export void stringToLower(std::string& str) {
 	// Loop all characters
 	for (size_t i = 0; i < str.length(); i++)
 	{
 		str[i] = std::tolower(str[i]);
 	}
+}
+
+// This function splits a string into substrings using a specified delimiter character.
+export std::vector<std::string> splitString(const std::string& inputString, char delimiter) {
+	std::vector<std::string> outputVector;
+
+	// The start position for the next substring to be extracted.
+	size_t startPos = 0;
+	// The end position of the current delimiter.
+	size_t endPos = 0;
+
+	// Loop through the input string, extracting substrings between the specified delimiter character.
+	while ((endPos = inputString.find(delimiter, startPos)) != std::string::npos) {
+		// Extract the substring and add it to the output vector.
+		outputVector.push_back(inputString.substr(startPos, endPos - startPos));
+		// Set the start position for the next substring to be extracted.
+		startPos = endPos + 1;
+	}
+
+	// Extract the last substring, which may not be followed by the delimiter character.
+	outputVector.push_back(inputString.substr(startPos));
+	return outputVector;
 }
 
 export void inline clearScreen(void) {
