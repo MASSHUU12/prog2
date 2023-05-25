@@ -30,6 +30,11 @@ void saveToCsv(const SaveData<T>& saveData) {
 
     // Open the file for writing
     std::ofstream file(saveData.fileName);
+    if (!file.is_open()) {
+        Logger::error("Error: Unable to open file for writing: " + saveData.fileName);
+        return;
+    }
+
 
     // Write column headers
     file << "Name,";
@@ -48,11 +53,7 @@ void saveToCsv(const SaveData<T>& saveData) {
     }
 
     file.close();
-
-    if constexpr (std::is_same_v<T, Item>)
-        Logger::ok("Items saved to: " + saveData.fileName);
-    else if constexpr (std::is_same_v<T, Employee>)
-        Logger::ok("Employees saved to: " + saveData.fileName);
+    Logger::ok("Data saved to file: " + saveData.fileName);
 }
 
 export template<class T>
@@ -82,18 +83,17 @@ void readFromCsv(const ReadData<T>& readData) {
         if (itemElement.size() >= 2) {
             T item;
             item.setName(itemElement[0]);
-            if constexpr (std::is_same_v<T, Item>) {
+            if constexpr (std::is_same_v<T, Item>)
                 item.setPrice(stringToNumber<double>(itemElement[1]));
-            }
-            else if constexpr (std::is_same_v<T, Employee>) {
+            else if constexpr (std::is_same_v<T, Employee>)
                 item.setAge(stringToNumber<int>(itemElement[1]));
-            }
             readData.data.push_back(item);
-        }
+        } else
+            Logger::warning("Invalid data format in the CSV file: " + readData.fileName);
     }
 
     file.close();
-    Logger::ok("File " + readData.fileName + " imported");
+    Logger::ok("Data imported from file: " + readData.fileName);
 }
 
 export template <typename T>
