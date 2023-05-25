@@ -1,4 +1,5 @@
 import <iostream>;
+import <vector>;
 
 import Helpers;
 import Menu;
@@ -14,11 +15,8 @@ int main(void)
 	std::string input;
 	short validatedInput;
 
-	Item* items = nullptr;
-	size_t numberOfItems = 0;
-
-	Employee* employees = nullptr;
-	size_t numberOfEmployees = 0;
+	std::vector<Item> items;
+	std::vector<Employee> employees;
 
 	do
 	{
@@ -51,22 +49,21 @@ int main(void)
 		switch (validatedInput)
 		{
 		case CREATE_SHOP_ITEMS:
-			ItemManager::fill(items, numberOfItems);
+			ItemManager::fill(items);
 			break;
 		case SHOW_SHOP_ITEMS:
-			ItemManager::show(items, numberOfItems);
+			ItemManager::show(items);
 			break;
 		case DELETE_SHOP_ITEMS:
-			ItemManager::deleteAll(items, numberOfItems);
+			ItemManager::deleteAll(items);
 			break;
 		case EDIT_SHOP_ITEM:
-			ItemManager::edit(items, numberOfItems);
+			ItemManager::edit(items);
 			break;
 		case SAVE_SHOP_ITEMS: {
 			std::string fileName = "shop_items.csv";
-			SaveData data = {
+			SaveData<Item> data = {
 				items,
-				numberOfItems,
 				fileName
 			};
 			std::cout << data;
@@ -74,31 +71,29 @@ int main(void)
 		}
 		case IMPORT_SHOP_ITEMS: {
 			std::string fileName = "shop_items.csv";
-			ReadData data = {
+			ReadData<Item> data = {
 				items,
-				numberOfItems,
 				fileName
 			};
 			std::cin >> data;
 			break;
 		}
 		case CREATE_EMPLOYEES:
-			EmployeeManager::fill(employees, numberOfEmployees);
+			EmployeeManager::fill(employees);
 			break;
 		case SHOW_EMPLOYEES:
-			EmployeeManager::show(employees, numberOfEmployees);
+			EmployeeManager::show(employees);
 			break;
 		case DELETE_EMPLOYEES:
-			EmployeeManager::deleteAll(employees, numberOfEmployees);
+			EmployeeManager::deleteAll(employees);
 			break;
 		case EDIT_EMPLOYEE:
-			EmployeeManager::edit(employees, numberOfEmployees);
+			EmployeeManager::edit(employees);
 			break;
 		case SAVE_EMPLOYEES: {
 			std::string fileName = "shop_employees.csv";
-			SaveData data = {
+			SaveData<Employee> data = {
 				employees,
-				numberOfEmployees,
 				fileName
 			};
 			std::cout << data;
@@ -106,9 +101,8 @@ int main(void)
 		}
 		case IMPORT_EMPLOYEES: {
 			std::string fileName = "shop_employees.csv";
-			ReadData data = {
+			ReadData<Employee> data = {
 				employees,
-				numberOfEmployees,
 				fileName
 			};
 			std::cin >> data;
