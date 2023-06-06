@@ -19,77 +19,121 @@ public:
 	virtual void edit() = 0;
 };
 
-export class ItemManager : public Shop {
-public:
-	void static create(Item& item) {
-		item = Item("", 0.0);
+// Functor for creating items
+struct ShopCreator {
+	template<typename T>
+	void operator()(T& obj) const {
+		obj = T("", 0.0);
 	}
 
-	void static create(std::vector<Item>& items, const size_t size) {
-		items.resize(size);
+	template<typename T>
+	void operator()(std::vector<T>& objs, const size_t size) const {
+		objs.resize(size);
 	}
+};
 
-	void static deleteAll(std::vector<Item>& items) {
-		if (items.empty()) {
-			Logger::warning("There are no items to delete");
+// Functor for deleting items
+struct ShopDeleter {
+	template<typename T>
+	void operator()(std::vector<T>& objs) const {
+		if (objs.empty()) {
+			Logger::warning("There are no objects to delete.");
 			return;
 		}
-		items.clear();
-		Logger::ok("Shop items deleted");
+		objs.clear();
+		Logger::ok("Objects deleted.");
 	}
+};
 
-	void static fill(std::vector<Item>& items) {
-		if (!items.empty()) {
-			deleteAll(items);
+// Functor for filling items
+struct ShopFiller {
+	template<typename T>
+	void operator()(std::vector<T>& objs) const {
+		if (!objs.empty()) {
+			ShopDeleter deleter;
+			deleter(objs);
 			clearScreen();
 		}
 
-		size_t numberOfItems = Random::getRandomNumber(1, 32);
-		create(items, numberOfItems);
+		size_t numberOfObjs = Random::getRandomNumber(1, 32);
+		ShopCreator creator;
+		creator(objs, numberOfObjs);
 
-		for (size_t i = 0; i < numberOfItems; i++) {
-			items[i].setName(Random::getRandomString(Random::getRandomNumber(1, 32)));
-			items[i].setPrice(Random::getRandomNumber(0.1, 999.9, 2));
-		}
+		if constexpr (std::is_same_v<T, Item>)
+			for (size_t i = 0; i < numberOfObjs; i++)
+			{
+				objs[i].setName(Random::getRandomString(Random::getRandomNumber(1, 32)));
+				objs[i].setPrice(Random::getRandomNumber(0.1, 999.9, 2));
+			}
+		if constexpr (std::is_same_v<T, Employee>)
+			for (size_t i = 0; i < numberOfObjs; i++)
+			{
+				objs[i].setName(Random::getRandomString(Random::getRandomNumber(1, 32)));
+				objs[i].setAge(Random::getRandomNumber(18, 100));
 
-		Logger::ok("Shop items created");
+			}
+
+		Logger::ok("Objects created");
 	}
+};
 
-	void static show(const std::vector<Item>& items) {
-		if (items.empty()) {
-			Logger::warning("There are no items to show");
+// Functor for showing items
+struct ShopShower {
+	template<typename T>
+	void operator()(const std::vector<T>& objs) const {
+		if (objs.empty()) {
+			Logger::warning("There are no objects to show.");
 			return;
 		}
 
-		for (size_t i = 0; i < items.size(); i++) {
-			if (i % 2 == 0) {
-				std::cout << Text::BG_GREEN << Text::FG_BLACK
-					<< items[i].getName() << "  " << items[i].getPrice()
-					<< " PLN\n" << Text::RESET;
-				continue;
+		if constexpr (std::is_same_v<T, Item>)
+			for (size_t i = 0; i < objs.size(); i++)
+			{
+				if (i % 2 == 0) {
+					std::cout << Text::BG_GREEN << Text::FG_BLACK
+						<< objs[i].getName() << "  " << objs[i].getPrice()
+						<< " PLN\n" << Text::RESET;
+					continue;
+				}
+				std::cout << objs[i].getName() << "  " << objs[i].getPrice() << " PLN\n";
 			}
-			std::cout << items[i].getName() << "  " << items[i].getPrice() << " PLN\n";
-		}
+		if constexpr (std::is_same_v<T, Employee>)
+			for (size_t i = 0; i < objs.size(); i++)
+			{
+				if (i % 2 == 0) {
+					std::cout << Text::BG_GREEN << Text::FG_BLACK
+						<< objs[i].getName() << "  " << objs[i].getAge()
+						<< "\n" << Text::RESET;
+					continue;
+				}
+				std::cout << objs[i].getName() << "  " << objs[i].getAge() << "\n";
+			}
+
 		Logger::ok("END");
 
 		pause("\nPress any key to continue...");
 		clearScreen();
 	}
+};
 
-	void static edit(std::vector<Item>& items) {
+// Functor for editing items
+struct ShopEditor {
+	template<typename T>
+	void operator()(std::vector<T>& objs) const {
 		std::string input;
 		int validatedInput;
 		double validatedDInput;
 		short index;
 
-		if (items.empty()) {
-			Logger::warning("There are no items to edit");
+		if (objs.empty()) {
+			Logger::warning("There are no objects to edit.");
 			return;
 		}
 
-		do {
+		do
+		{
 			std::cout << "Enter which item you want to edit (0 - "
-				<< items.size() - 1 << ")\n";
+				<< objs.size() - 1 << ")\n";
 			std::cout << "> ";
 			std::cin >> input;
 
@@ -101,8 +145,8 @@ public:
 				continue;
 			}
 
-			if (validatedInput >= items.size() || validatedInput < 0) {
-				Logger::error("Invalid input: The number specified exceeds the acceptable range");
+			if (validatedInput >= objs.size() || validatedInput < 0) {
+				Logger::error("Invalid input: The number specified exceeds the acceptable range.");
 				continue;
 			}
 
@@ -110,18 +154,24 @@ public:
 		} while (true);
 
 		index = validatedInput;
-		Item& item = items[index];
+		T& obj = objs[index];
 
 		std::cout << "You're editing:\n";
-		Logger::warning(item.getName() + std::string("  ") + std::to_string(item.getPrice()));
+
+		if constexpr (std::is_same_v<T, Item>)
+			Logger::warning(obj.getName() + std::string("  ") + std::to_string(obj.getPrice()));
+		if constexpr (std::is_same_v<T, Employee>)
+			Logger::warning(obj.getName() + std::string("  ") + std::to_string(obj.getAge()));
 
 		std::cout << "\nNew name: ";
 		std::cin >> input;
-
-		item.setName(input);
+		obj.setName(input);
 
 		do {
-			std::cout << "New price: ";
+			if constexpr (std::is_same_v<T, Item>)
+				std::cout << "New price: ";
+			if constexpr (std::is_same_v<T, Employee>)
+				std::cout << "New age: ";
 			std::cin >> input;
 
 			try {
@@ -134,124 +184,75 @@ public:
 			break;
 		} while (true);
 
-		item.setPrice(validatedDInput);
+		if constexpr (std::is_same_v<T, Item>)
+			obj.setPrice(validatedDInput);
+		if constexpr (std::is_same_v<T, Employee>)
+			obj.setAge(validatedDInput);
+	}
+};
+
+export class ItemManager : public Shop {
+public:
+	void static create(Item& item) {
+		ShopCreator creator;
+		creator(item);
+	}
+
+	void static create(std::vector<Item>& items, const size_t size) {
+		ShopCreator creator;
+		creator(items, size);
+	}
+
+	void static deleteAll(std::vector<Item>& items) {
+		ShopDeleter deleter;
+		deleter(items);
+	}
+
+	void static fill(std::vector<Item>& items) {
+		ShopFiller filler;
+		filler(items);
+	}
+
+	void static show(const std::vector<Item>& items) {
+		ShopShower shower;
+		shower(items);
+	}
+
+	void static edit(std::vector<Item>& items) {
+		ShopEditor editor;
+		editor(items);
 	}
 };
 
 export class EmployeeManager : public Shop {
 public:
-	void static create(Employee& employee) {
-		employee = Employee("", 0);
+	void static create(Employee& item) {
+		ShopCreator creator;
+		creator(item);
 	}
 
-	void static create(std::vector<Employee>& employees, const size_t size) {
-		employees.resize(size);
+	void static create(std::vector<Employee>& items, const size_t size) {
+		ShopCreator creator;
+		creator(items, size);
 	}
 
-	void static deleteAll(std::vector<Employee>& employees) {
-		if (employees.empty()) {
-			Logger::warning("There are no employees to delete");
-			return;
-		}
-		employees.clear();
-		Logger::ok("Shop employees deleted");
+	void static deleteAll(std::vector<Employee>& items) {
+		ShopDeleter deleter;
+		deleter(items);
 	}
 
-	void static fill(std::vector<Employee>& employees) {
-		if (!employees.empty()) {
-			deleteAll(employees);
-			clearScreen();
-		}
-
-		size_t numberOfEmployees = Random::getRandomNumber(1, 32);
-		create(employees, numberOfEmployees);
-
-		for (size_t i = 0; i < numberOfEmployees; i++) {
-			employees[i].setName(Random::getRandomString(Random::getRandomNumber(1, 32)));
-			employees[i].setAge(Random::getRandomNumber(18, 100));
-		}
-
-		Logger::ok("Shop employees created");
+	void static fill(std::vector<Employee>& items) {
+		ShopFiller filler;
+		filler(items);
 	}
 
-	void static show(const std::vector<Employee>& employees) {
-		if (employees.empty()) {
-			Logger::warning("There are no employees to show");
-			return;
-		}
-
-		for (size_t i = 0; i < employees.size(); i++) {
-			if (i % 2 == 0) {
-				std::cout << Text::BG_GREEN << Text::FG_BLACK
-					<< employees[i].getName() << "  " << employees[i].getAge() << Text::RESET << "\n";
-				continue;
-			}
-			std::cout << employees[i].getName() << "  " << employees[i].getAge() << "\n";
-		}
-		Logger::ok("END");
-
-		pause("\nPress any key to continue...");
-		clearScreen();
+	void static show(const std::vector<Employee>& items) {
+		ShopShower shower;
+		shower(items);
 	}
 
-	void static edit(std::vector<Employee>& employees) {
-		std::string input;
-		int validatedInput;
-		int validatedIInput;
-		short index;
-
-		if (employees.empty()) {
-			Logger::warning("There are no employees to edit");
-			return;
-		}
-
-		do {
-			std::cout << "Enter which employee you want to edit (0 - "
-				<< employees.size() - 1 << ")\n";
-			std::cout << "> ";
-			std::cin >> input;
-
-			try {
-				validatedInput = stringToInt(input);
-			}
-			catch (const std::invalid_argument& e) {
-				Logger::error(std::string("Invalid input: ") + e.what() + "\n");
-				continue;
-			}
-
-			if (validatedInput >= employees.size() || validatedInput < 0) {
-				Logger::error("Invalid input: The number specified exceeds the acceptable range");
-				continue;
-			}
-
-			break;
-		} while (true);
-
-		index = validatedInput;
-		Employee& employee = employees[index];
-
-		std::cout << "You're editing:\n";
-		Logger::warning(employee.getName() + std::string("  ") + std::to_string(employee.getAge()));
-
-		std::cout << "\nNew name: ";
-		std::cin >> input;
-
-		employee.setName(input);
-
-		do {
-			std::cout << "New age: ";
-			std::cin >> input;
-
-			try {
-				validatedIInput = stringToInt(input);
-			}
-			catch (const std::invalid_argument& e) {
-				Logger::error(std::string("Invalid input: ") + e.what() + "\n");
-				continue;
-			}
-			break;
-		} while (true);
-
-		employee.setAge(validatedIInput);
+	void static edit(std::vector<Employee>& items) {
+		ShopEditor editor;
+		editor(items);
 	}
 };
