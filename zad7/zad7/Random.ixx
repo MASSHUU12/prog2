@@ -5,34 +5,20 @@ import <random>;
 import <string>;
 import <sstream>;
 import <cmath>;
+import <type_traits>;
 
 export class Random {
 public:
 	static int getRandomNumber(int min, int max) {
-		std::random_device rd;
-		std::mt19937 eng(rd());
-		std::uniform_int_distribution<> distr(min, max);
-
-		return distr(eng);
+		return getRandomValue(min, max);
 	}
 
 	static double getRandomNumber(double min, double max) {
-		std::random_device rd;
-		std::mt19937 eng(rd());
-		std::uniform_real_distribution<double> distr(min, max);
-
-		return distr(eng);
+		return getRandomValue<double>(min, max);
 	}
 
 	static double getRandomNumber(double min, double max, int precision) {
-		std::random_device rd;
-		std::mt19937 gen(rd());
-		std::uniform_real_distribution<double> dist(min, max);
-
-		double rand_num = dist(gen);
-		double factor = std::pow(10, precision);
-
-		return std::round(rand_num * factor) / factor;
+		return getRandomValue<double>(min, max, precision);
 	}
 
 	static std::string getRandomString(int length) {
@@ -46,5 +32,37 @@ public:
 			str.push_back(c);
 		}
 		return str;
+	}
+
+private:
+	template<typename T>
+	static T getRandomValue(T min, T max) {
+		std::random_device rd;
+		std::mt19937 eng(rd());
+		std::uniform_real_distribution<T> distr(min, max);
+
+		return distr(eng);
+	}
+
+	static int getRandomValue(int min, int max) {
+		std::random_device rd;
+		std::mt19937 eng(rd());
+		std::uniform_real_distribution<> distr(min, max);
+
+		return distr(eng);
+	}
+
+	template <typename T>
+	static T getRandomValue(T min, T max, int precision) {
+		static_assert(!std::is_same<T, int>::value, "T must be of type int.");
+
+		std::random_device rd;
+		std::mt19937 gen(rd());
+		std::uniform_real_distribution<T> dist(min, max);
+
+		T rand_num = dist(gen);
+		T factor = std::pow(10, precision);
+
+		return std::round(rand_num * factor) / factor;
 	}
 };
