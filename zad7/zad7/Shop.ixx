@@ -4,6 +4,7 @@ import <iostream>;
 import <string>;
 import <vector>;
 import <memory>;
+import <optional>;
 
 import Structs;
 import Random;
@@ -124,7 +125,7 @@ struct ShopEditor {
 	template<typename T>
 	void operator()(std::vector<std::unique_ptr<T>>& objs) const {
 		std::string input;
-		int validatedInput;
+		std::optional<int> validatedInput;
 		double validatedDInput;
 		short index;
 
@@ -140,15 +141,14 @@ struct ShopEditor {
 			std::cout << "> ";
 			std::cin >> input;
 
-			try {
-				validatedInput = stringToInt(input);
-			}
-			catch (const std::invalid_argument& e) {
-				Logger::error(std::string("Invalid input: ") + e.what() + "\n");
+			validatedInput = stringToInt(input);
+			if (!validatedInput.has_value())
+			{
+				Logger::error(std::string("Invalid input: can't convert \"") + input + "\" to integer.\n");
 				continue;
 			}
 
-			if (validatedInput >= objs.size() || validatedInput < 0) {
+			if (validatedInput.value() >= objs.size() || validatedInput.value() < 0) {
 				Logger::error("Invalid input: The number specified exceeds the acceptable range.");
 				continue;
 			}
@@ -156,7 +156,7 @@ struct ShopEditor {
 			break;
 		} while (true);
 
-		index = validatedInput;
+		index = validatedInput.value();
 		T& obj = *objs[index];
 
 		std::cout << "You're editing:\n";

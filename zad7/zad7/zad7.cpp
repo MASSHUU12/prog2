@@ -1,6 +1,7 @@
 import <iostream>;
 import <vector>;
 import <memory>;
+import <optional>;
 
 import Helpers;
 import Menu;
@@ -14,7 +15,7 @@ import CSV;
 int main(void)
 {
 	std::string input;
-	short validatedInput;
+	std::optional<int> validatedInput;
 
 	std::vector<std::unique_ptr<Item>> items;
 	std::vector<std::unique_ptr<Employee>> employees;
@@ -33,21 +34,18 @@ int main(void)
 			break;
 		}
 
-		try
-		{
-			validatedInput = stringToInt(input);
-		}
-		catch (const std::invalid_argument& e)
+		validatedInput = stringToInt(input);
+		if (!validatedInput.has_value())
 		{
 			clearScreen();
 
-			Logger::error(std::string("Invalid input: ") + e.what() + "\n");
+			Logger::error(std::string("Invalid input: can't convert \"") + input + "\" to integer.\n");
 			continue;
 		}
 
 		clearScreen();
 
-		switch (validatedInput)
+		switch (validatedInput.value())
 		{
 		case CREATE_SHOP_ITEMS:
 			ItemManager::fill(items);
