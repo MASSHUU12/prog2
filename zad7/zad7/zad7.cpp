@@ -15,7 +15,7 @@ import CSV;
 int main(void)
 {
 	std::string input;
-	std::optional<int> validatedInput;
+	std::optional<short> validatedInput;
 
 	std::vector<std::unique_ptr<Item>> items;
 	std::vector<std::unique_ptr<Employee>> employees;
@@ -34,7 +34,7 @@ int main(void)
 			break;
 		}
 
-		validatedInput = stringToInt(input);
+		validatedInput = stringToNumber<short>(input);
 		if (!validatedInput.has_value())
 		{
 			clearScreen();

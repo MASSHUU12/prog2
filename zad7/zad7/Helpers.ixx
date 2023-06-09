@@ -12,23 +12,12 @@ import <optional>;
 import Structs;
 import Logger;
 
-export std::optional<int> stringToInt(const std::string& str)
-{
-	int value;
-	auto [p, ec] = std::from_chars(str.data(), str.data() + str.size(), value);
-
-	if (ec == std::errc())
-		return value;
-	else
-		return std::nullopt;
-}
-
 export template<typename T>
-T stringToNumber(const std::string& str)
+std::optional<T> stringToNumber(const std::string& str)
 {
 	// Check that the input string is not empty
 	if (str.empty())
-		throw std::invalid_argument("Input string is empty");
+		return std::nullopt;
 
 	// Create a string stream to parse the input string
 	std::istringstream ss(str);
@@ -39,7 +28,7 @@ T stringToNumber(const std::string& str)
 
 	// Check that the extraction was successful and that there are no trailing characters
 	if (ss.fail() || !ss.eof())
-		throw std::invalid_argument("Input string contains non-numeric characters");
+		return std::nullopt;
 
 	return value;
 }

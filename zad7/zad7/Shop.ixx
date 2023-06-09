@@ -141,7 +141,7 @@ struct ShopEditor {
 			std::cout << "> ";
 			std::cin >> input;
 
-			validatedInput = stringToInt(input);
+			validatedInput = stringToNumber<int>(input);
 			if (!validatedInput.has_value())
 			{
 				Logger::error(std::string("Invalid input: can't convert \"") + input + "\" to integer.\n");

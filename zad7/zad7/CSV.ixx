@@ -83,9 +83,9 @@ void readFromCsv(const ReadData<T>& readData) {
             item->setName(itemElement[0]);
 
             if constexpr (std::is_same_v<T, Item>)
-                item->setPrice(stringToNumber<double>(itemElement[1]));
+                item->setPrice(stringToNumber<double>(itemElement[1]).value());
             else if constexpr (std::is_same_v<T, Employee>)
-                item->setAge(stringToNumber<int>(itemElement[1]));
+                item->setAge(stringToNumber<int>(itemElement[1]).value());
 
             readData.data.push_back(std::move(item));
         }
