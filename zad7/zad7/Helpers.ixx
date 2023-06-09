@@ -30,11 +30,8 @@ std::optional<T> stringToNumber(const std::string& str)
 }
 
 export void stringToLower(std::string& str) {
-	// Loop all characters
-	for (size_t i = 0; i < str.length(); i++)
-	{
-		str[i] = std::tolower(str[i]);
-	}
+	std::transform(str.begin(), str.end(), str.begin(),
+		[](unsigned char c) { return std::tolower(c); });
 }
 
 // This function splits a string into substrings using a specified delimiter character.
@@ -60,13 +57,7 @@ export std::vector<std::string> splitString(const std::string& inputString, char
 }
 
 export void inline clearScreen(void) {
-	#if defined _WIN32
-		system("cls");
-	#elif defined(__LINUX__) || defined(__gnu_linux__) || defined(__linux__)
-		system("clear");
-	#elif defined(__APPLE__)
-		system("clear");
-	#endif
+	std::cout << "\033[2J\033[H";
 }
 
 export template<typename T>
