@@ -99,12 +99,12 @@ void readFromCsv(const ReadData<T>& readData) {
 
 export template <typename T>
 std::ostream& operator<<(std::ostream& os, const SaveData<T>& data) {
-    saveToCsv(data);
+    saveToCsv(data); // Call saveToCsv function when the SaveData object is streamed to an output stream
     return os;
 }
 
 export template <typename T>
 std::istream& operator>>(std::istream& is, ReadData<T>& data) {
-    readFromCsv(data);
+    readFromCsv(data); // Call readFromCsv function when the ReadData object is streamed from an input stream
     return is;
 }

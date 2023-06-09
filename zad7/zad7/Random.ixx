@@ -18,14 +18,15 @@ public:
 	}
 
 	static std::string getRandomString(int length) {
-		std::random_device rd;
-		std::mt19937 eng(rd());
+		std::random_device rd; // Create a random_device object for seeding the random number generator.
+		std::mt19937 eng(rd()); // Create a Mersenne Twister engine and seed it with the random_device.
+		// Create a uniform distribution object for generating random integers between 0 and 25 (inclusive).
 		std::uniform_int_distribution<> distr(0, 25);
 
 		std::string str;
 		for (int i = 0; i < length; i++) {
-			char c = 'a' + distr(eng);
-			str.push_back(c);
+			char c = 'a' + distr(eng); // Generate a random integer and add it to the ASCII value of 'a' to get a random lowercase letter.
+			str.push_back(c); // Add the generated character to the string.
 		}
 		return str;
 	}

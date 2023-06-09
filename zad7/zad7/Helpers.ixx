@@ -13,21 +13,35 @@ std::optional<T> stringToNumber(const std::string& str)
 {
 	// Check that the input string is not empty
 	if (str.empty())
-		return std::nullopt;
+		return std::nullopt; // If the string is empty, return std::nullopt (empty optional)
 
 	T value;
+	// Convert the string to a numeric value
+	// The result object contains information about the conversion.
 	auto result = std::from_chars(str.data(), str.data() + str.size(), value);
 
 	if (result.ec == std::errc{} && result.ptr == str.data() + str.size())
+		// Check if the conversion was successful by verifying that no error occurred
+		// and the entire string was parsed (result.ptr is at the end of the string)
 		return value;
 
+	// If the conversion was not successful, return std::nullopt
 	return std::nullopt;
 }
 
 export void stringToLower(std::string& str) {
+	// Transform the string to lowercase
 	std::transform(str.begin(), str.end(), str.begin(),
 		[](unsigned char c) { return std::tolower(c); });
+	// std::transform applies the specified operation (lambda function) to each character in the string
+
+	// The lambda function [](unsigned char c) { return std::tolower(c); } converts a character to lowercase
+	// using std::tolower function from the <cctype> library
+
+	// Note that the lambda function takes an unsigned char as input to handle all possible characters correctly,
+	// including characters outside the ASCII range.
 }
+
 
 // This function splits a string into substrings using a specified delimiter character.
 export std::vector<std::string> splitString(const std::string& inputString, char delimiter) {
