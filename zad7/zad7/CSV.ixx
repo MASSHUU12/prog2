@@ -1,12 +1,8 @@
 export module CSV;
 
-import <iostream>;
 import <string>;
-import <random>;
-import <fstream>;
-import <cstring>;
 import <vector>;
-import <memory>;
+import <fstream>;
 
 import Structs;
 import Logger;
@@ -85,10 +81,12 @@ void readFromCsv(const ReadData<T>& readData) {
         if (itemElement.size() >= 2) {
             std::unique_ptr<T> item = std::make_unique<T>();
             item->setName(itemElement[0]);
+
             if constexpr (std::is_same_v<T, Item>)
                 item->setPrice(stringToNumber<double>(itemElement[1]));
             else if constexpr (std::is_same_v<T, Employee>)
                 item->setAge(stringToNumber<int>(itemElement[1]));
+
             readData.data.push_back(std::move(item));
         }
         else
