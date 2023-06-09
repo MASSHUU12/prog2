@@ -115,7 +115,7 @@ struct ShopShower {
 
 		Logger::ok("END");
 
-		pause("\nPress any key to continue...");
+		pause<std::string>("\nPress any key to continue...");
 		clearScreen();
 	}
 };

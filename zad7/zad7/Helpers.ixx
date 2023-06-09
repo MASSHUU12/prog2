@@ -73,14 +73,8 @@ export void inline clearScreen(void) {
 	#endif
 }
 
-export void pause(const char str) {
-	std::cout << str;
-
-	std::cin.ignore(); // Clear any input left in memory
-	std::cin.ignore(); // Wait for user to press enter
-}
-
-export void pause(const std::string& str) {
+export template<typename T>
+void pause(const T& str) {
 	std::cout << str;
 
 	std::cin.ignore(); // Clear any input left in memory
