@@ -1,5 +1,6 @@
 import <iostream>;
 import <vector>;
+import <memory>;
 
 import Helpers;
 import Menu;
@@ -15,8 +16,8 @@ int main(void)
 	std::string input;
 	short validatedInput;
 
-	std::vector<Item> items;
-	std::vector<Employee> employees;
+	std::vector<std::unique_ptr<Item>> items;
+	std::vector<std::unique_ptr<Employee>> employees;
 
 	do
 	{

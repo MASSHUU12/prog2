@@ -6,6 +6,7 @@ import <random>;
 import <fstream>;
 import <cstring>;
 import <vector>;
+import <memory>;
 
 import Structs;
 import Logger;
@@ -14,10 +15,10 @@ import Helpers;
 
 export template<class T>
 struct SaveData {
-    std::vector<T>& data;
+    std::vector<std::unique_ptr<T>>& data;
     const std::string& fileName;
 
-    SaveData(std::vector<T>& data, const std::string& fileName)
+    SaveData(std::vector<std::unique_ptr<T>>& data, const std::string& fileName)
         : data(data), fileName(fileName) {}
 };
 
@@ -44,7 +45,8 @@ void saveToCsv(const SaveData<T>& saveData) {
         file << "Age\n";
 
     // Write the data for each item
-    for (const auto& item : saveData.data) {
+    for (const auto& itemPtr : saveData.data) {
+        const T& item = *itemPtr;
         file << item.getName() << ",";
         if constexpr (std::is_same_v<T, Item>)
             file << item.getPrice() << "\n";
@@ -58,10 +60,10 @@ void saveToCsv(const SaveData<T>& saveData) {
 
 export template<class T>
 struct ReadData {
-    std::vector<T>& data;
+    std::vector<std::unique_ptr<T>>& data;
     const std::string& fileName;
 
-    ReadData(std::vector<T>& data, const std::string& fileName)
+    ReadData(std::vector<std::unique_ptr<T>>& data, const std::string& fileName)
         : data(data), fileName(fileName) {}
 };
 
@@ -81,14 +83,15 @@ void readFromCsv(const ReadData<T>& readData) {
     while (std::getline(file, line)) {
         std::vector<std::string> itemElement = splitString(line, ',');
         if (itemElement.size() >= 2) {
-            T item;
-            item.setName(itemElement[0]);
+            std::unique_ptr<T> item = std::make_unique<T>();
+            item->setName(itemElement[0]);
             if constexpr (std::is_same_v<T, Item>)
-                item.setPrice(stringToNumber<double>(itemElement[1]));
+                item->setPrice(stringToNumber<double>(itemElement[1]));
             else if constexpr (std::is_same_v<T, Employee>)
-                item.setAge(stringToNumber<int>(itemElement[1]));
-            readData.data.push_back(item);
-        } else
+                item->setAge(stringToNumber<int>(itemElement[1]));
+            readData.data.push_back(std::move(item));
+        }
+        else
             Logger::warning("Invalid data format in the CSV file: " + readData.fileName);
     }
 

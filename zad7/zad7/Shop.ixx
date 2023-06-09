@@ -3,6 +3,7 @@ export module Shop;
 import <iostream>;
 import <string>;
 import <vector>;
+import <memory>;
 
 import Structs;
 import Random;
@@ -22,20 +23,23 @@ public:
 // Functor for creating items
 struct ShopCreator {
 	template<typename T>
-	void operator()(T& obj) const {
-		obj = T("", 0.0);
+	void operator()(std::unique_ptr<T>& obj) const {
+		obj = std::make_unique<T>("", 0.0);
 	}
 
 	template<typename T>
-	void operator()(std::vector<T>& objs, const size_t size) const {
+	void operator()(std::vector<std::unique_ptr<T>>& objs, const size_t size) const {
 		objs.resize(size);
+		for (size_t i = 0; i < size; ++i) {
+			objs[i] = std::make_unique<T>("", 0.0);
+		}
 	}
 };
 
 // Functor for deleting items
 struct ShopDeleter {
 	template<typename T>
-	void operator()(std::vector<T>& objs) const {
+	void operator()(std::vector<std::unique_ptr<T>>& objs) const {
 		if (objs.empty()) {
 			Logger::warning("There are no objects to delete.");
 			return;
@@ -48,7 +52,7 @@ struct ShopDeleter {
 // Functor for filling items
 struct ShopFiller {
 	template<typename T>
-	void operator()(std::vector<T>& objs) const {
+	void operator()(std::vector<std::unique_ptr<T>>& objs) const {
 		if (!objs.empty()) {
 			ShopDeleter deleter;
 			deleter(objs);
@@ -59,19 +63,18 @@ struct ShopFiller {
 		ShopCreator creator;
 		creator(objs, numberOfObjs);
 
-		if constexpr (std::is_same_v<T, Item>)
-			for (size_t i = 0; i < numberOfObjs; i++)
-			{
-				objs[i].setName(Random::getRandomString(Random::getRandomNumber(1, 32)));
-				objs[i].setPrice(Random::getRandomNumber(0.1, 999.9, 2));
+		if constexpr (std::is_same_v<T, Item>) {
+			for (size_t i = 0; i < numberOfObjs; i++) {
+				objs[i]->setName(Random::getRandomString(Random::getRandomNumber(1, 32)));
+				objs[i]->setPrice(Random::getRandomNumber(0.1, 999.9, 2));
 			}
-		if constexpr (std::is_same_v<T, Employee>)
-			for (size_t i = 0; i < numberOfObjs; i++)
-			{
-				objs[i].setName(Random::getRandomString(Random::getRandomNumber(1, 32)));
-				objs[i].setAge(Random::getRandomNumber(18, 100));
-
+		}
+		if constexpr (std::is_same_v<T, Employee>) {
+			for (size_t i = 0; i < numberOfObjs; i++) {
+				objs[i]->setName(Random::getRandomString(Random::getRandomNumber(1, 32)));
+				objs[i]->setAge(Random::getRandomNumber(18, 100));
 			}
+		}
 
 		Logger::ok("Objects created");
 	}
@@ -80,34 +83,34 @@ struct ShopFiller {
 // Functor for showing items
 struct ShopShower {
 	template<typename T>
-	void operator()(const std::vector<T>& objs) const {
+	void operator()(const std::vector<std::unique_ptr<T>>& objs) const {
 		if (objs.empty()) {
 			Logger::warning("There are no objects to show.");
 			return;
 		}
 
-		if constexpr (std::is_same_v<T, Item>)
-			for (size_t i = 0; i < objs.size(); i++)
-			{
+		if constexpr (std::is_same_v<T, Item>) {
+			for (size_t i = 0; i < objs.size(); i++) {
 				if (i % 2 == 0) {
 					std::cout << Text::BG_GREEN << Text::FG_BLACK
-						<< objs[i].getName() << "  " << objs[i].getPrice()
+						<< objs[i]->getName() << "  " << objs[i]->getPrice()
 						<< " PLN\n" << Text::RESET;
 					continue;
 				}
-				std::cout << objs[i].getName() << "  " << objs[i].getPrice() << " PLN\n";
+				std::cout << objs[i]->getName() << "  " << objs[i]->getPrice() << " PLN\n";
 			}
-		if constexpr (std::is_same_v<T, Employee>)
-			for (size_t i = 0; i < objs.size(); i++)
-			{
+		}
+		if constexpr (std::is_same_v<T, Employee>) {
+			for (size_t i = 0; i < objs.size(); i++) {
 				if (i % 2 == 0) {
 					std::cout << Text::BG_GREEN << Text::FG_BLACK
-						<< objs[i].getName() << "  " << objs[i].getAge()
+						<< objs[i]->getName() << "  " << objs[i]->getAge()
 						<< "\n" << Text::RESET;
 					continue;
 				}
-				std::cout << objs[i].getName() << "  " << objs[i].getAge() << "\n";
+				std::cout << objs[i]->getName() << "  " << objs[i]->getAge() << "\n";
 			}
+		}
 
 		Logger::ok("END");
 
@@ -119,7 +122,7 @@ struct ShopShower {
 // Functor for editing items
 struct ShopEditor {
 	template<typename T>
-	void operator()(std::vector<T>& objs) const {
+	void operator()(std::vector<std::unique_ptr<T>>& objs) const {
 		std::string input;
 		int validatedInput;
 		double validatedDInput;
@@ -154,7 +157,7 @@ struct ShopEditor {
 		} while (true);
 
 		index = validatedInput;
-		T& obj = objs[index];
+		T& obj = *objs[index];
 
 		std::cout << "You're editing:\n";
 
@@ -193,32 +196,32 @@ struct ShopEditor {
 
 export class ItemManager : public Shop {
 public:
-	void static create(Item& item) {
+	static void create(std::unique_ptr<Item>& item) {
 		ShopCreator creator;
 		creator(item);
 	}
 
-	void static create(std::vector<Item>& items, const size_t size) {
+	static void create(std::vector<std::unique_ptr<Item>>& items, const size_t size) {
 		ShopCreator creator;
 		creator(items, size);
 	}
 
-	void static deleteAll(std::vector<Item>& items) {
+	static void deleteAll(std::vector<std::unique_ptr<Item>>& items) {
 		ShopDeleter deleter;
 		deleter(items);
 	}
 
-	void static fill(std::vector<Item>& items) {
+	static void fill(std::vector<std::unique_ptr<Item>>& items) {
 		ShopFiller filler;
 		filler(items);
 	}
 
-	void static show(const std::vector<Item>& items) {
+	static void show(const std::vector<std::unique_ptr<Item>>& items) {
 		ShopShower shower;
 		shower(items);
 	}
 
-	void static edit(std::vector<Item>& items) {
+	static void edit(std::vector<std::unique_ptr<Item>>& items) {
 		ShopEditor editor;
 		editor(items);
 	}
@@ -226,33 +229,34 @@ public:
 
 export class EmployeeManager : public Shop {
 public:
-	void static create(Employee& item) {
+	static void create(std::unique_ptr<Employee>& item) {
 		ShopCreator creator;
 		creator(item);
 	}
 
-	void static create(std::vector<Employee>& items, const size_t size) {
+	static void create(std::vector<std::unique_ptr<Employee>>& items, const size_t size) {
 		ShopCreator creator;
 		creator(items, size);
 	}
 
-	void static deleteAll(std::vector<Employee>& items) {
+	static void deleteAll(std::vector<std::unique_ptr<Employee>>& items) {
 		ShopDeleter deleter;
 		deleter(items);
 	}
 
-	void static fill(std::vector<Employee>& items) {
+	static void fill(std::vector<std::unique_ptr<Employee>>& items) {
 		ShopFiller filler;
 		filler(items);
 	}
 
-	void static show(const std::vector<Employee>& items) {
+	static void show(const std::vector<std::unique_ptr<Employee>>& items) {
 		ShopShower shower;
 		shower(items);
 	}
 
-	void static edit(std::vector<Employee>& items) {
+	static void edit(std::vector<std::unique_ptr<Employee>>& items) {
 		ShopEditor editor;
 		editor(items);
 	}
 };
+
