@@ -8,6 +8,7 @@ import <cstring>;
 import <vector>;
 import <charconv>;
 import <optional>;
+import <cctype>;
 
 import Structs;
 import Logger;
@@ -19,18 +20,13 @@ std::optional<T> stringToNumber(const std::string& str)
 	if (str.empty())
 		return std::nullopt;
 
-	// Create a string stream to parse the input string
-	std::istringstream ss(str);
-
-	// Try to extract a value of type T from the string stream
 	T value;
-	ss >> value;
+	auto result = std::from_chars(str.data(), str.data() + str.size(), value);
 
-	// Check that the extraction was successful and that there are no trailing characters
-	if (ss.fail() || !ss.eof())
-		return std::nullopt;
+	if (result.ec == std::errc{} && result.ptr == str.data() + str.size())
+		return value;
 
-	return value;
+	return std::nullopt;
 }
 
 export void stringToLower(std::string& str) {
